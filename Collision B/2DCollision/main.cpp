@@ -30,6 +30,9 @@ int main()
 		return EXIT_FAILURE;
 	}
 
+	//Shape for bounding box
+	sf::RectangleShape bBox;
+
 	// Setup NPC's Default Animated Sprite
 	AnimatedSprite npc_animated_sprite(npc_texture);
 	npc_animated_sprite.addFrame(sf::IntRect(3, 3, 84, 84));
@@ -54,6 +57,11 @@ int main()
 	// Setup the Player
 	GameObject &player = Player(player_animated_sprite);
 
+	//Setup bounding box
+	bBox.setSize(sf::Vector2f(((player.getAnimatedSprite().getGlobalBounds().width)) + 10, ((player.getAnimatedSprite().getGlobalBounds().height)) + 10));
+	bBox.setFillColor(sf::Color::Blue);
+	bBox.setPosition(player.getAnimatedSprite().getPosition().x - 5, player.getAnimatedSprite().getPosition().y - 5);
+
 	//Setup NPC AABB
 	c2AABB aabb_npc;
 	aabb_npc.min = c2V(npc.getAnimatedSprite().getPosition().x, npc.getAnimatedSprite().getPosition().y);
@@ -66,7 +74,7 @@ int main()
 	//Setup Player AABB
 	c2AABB aabb_player;
 	aabb_player.min = c2V(player.getAnimatedSprite().getPosition().x, player.getAnimatedSprite().getPosition().y);
-	aabb_player.max = c2V(player.getAnimatedSprite().getGlobalBounds().width / 6, player.getAnimatedSprite().getGlobalBounds().width / 6);
+	aabb_player.max = c2V(player.getAnimatedSprite().getPosition().x + player.getAnimatedSprite().getGlobalBounds().width / 6, player.getAnimatedSprite().getPosition().y + player.getAnimatedSprite().getGlobalBounds().width / 6);
 
 
 	// Initialize Input
@@ -83,7 +91,8 @@ int main()
 	{
 		// Move Sprite Follow Mouse
 		player.getAnimatedSprite().setPosition(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-		
+		//Move bounding box to match player sprite
+		bBox.setPosition(player.getAnimatedSprite().getPosition().x - 5, player.getAnimatedSprite().getPosition().y - 5);
 		// Move The NPC
 		sf::Vector2f move_to(npc.getAnimatedSprite().getPosition().x + direction.x, npc.getAnimatedSprite().getPosition().y + direction.y);
 
@@ -175,19 +184,26 @@ int main()
 		cout << ((result != 0) ? ("Collision") : "") << endl;
 		if (result){
 			player.getAnimatedSprite().setColor(sf::Color(255,0,0));
+			bBox.setFillColor(sf::Color::Red);
 		}
 		else {
 			player.getAnimatedSprite().setColor(sf::Color(0, 255, 0));
+			bBox.setFillColor(sf::Color::Blue);
 		}
 
 		// Clear screen
 		window.clear();
+
+		//draw the bounding box first so the player is drawn ontop of it
+		window.draw(bBox);
 
 		// Draw the Players Current Animated Sprite
 		window.draw(player.getAnimatedSprite());
 
 		// Draw the NPC's Current Animated Sprite
 		window.draw(npc.getAnimatedSprite());
+
+		
 
 		// Update the window
 		window.display();

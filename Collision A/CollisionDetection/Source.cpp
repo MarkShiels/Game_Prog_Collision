@@ -2,7 +2,8 @@
 #include <math.h>
 #include <time.h>
 
-class Point {
+class Point
+{
 public:
 	int x;
 	int y;
@@ -12,7 +13,8 @@ public:
 	}
 };
 
-class Circle {
+class Circle 
+{
 public:
 	Point p;
 	int r;
@@ -21,6 +23,22 @@ public:
 		std::cout << "x:" << p.x << " y:" << p.y << " r:" << r << std::endl;
 	}
 };
+
+class Box 
+{
+public:
+	Point p;
+	int h;
+	int w;
+
+	void print()
+	{
+		std::cout << "p.x: " << p.x << " p.y: " << p.y << " h: " << h << " w: " << w << std::endl;
+	}
+
+
+};
+
 
 int calculate_hypotenuse(Point a, Point b) {
 	int result = 0;
@@ -65,6 +83,19 @@ int main() {
 	npc_circle.r = rand() % 2 + 1;
 
 
+	//Box Collision
+	Box player_box;
+	player_box.p.x = rand() % 10 + 1;
+	player_box.p.y = rand() % 10 + 1;
+	player_box.h = 2;
+	player_box.w = 2;
+
+	Box npc_box;
+	npc_box.p.x = rand() % 10 + 1;
+	npc_box.p.y = rand() % 10 + 1;
+	npc_box.h = 2;
+	npc_box.w = 2;
+
 	while (true) {
 
 		// Point Collision check
@@ -78,8 +109,7 @@ int main() {
 		else
 		{
 			std::cout << "No Collision" << std::endl;
-			player_point.print();
-			npc_point.print();
+			
 		}
 
 		player_point.x = rand() % 10 + 1;
@@ -96,12 +126,73 @@ int main() {
 		else
 		{
 			std::cout << "No Collision" << std::endl;
-			player_circle.print();
-			npc_circle.print();
+			
 		}
 
 		player_circle.p.x = rand() % 10 + 1;
 		player_circle.p.y = rand() % 10 + 1;
+
+
+		if (calculate_hypotenuse(player_circle.p, npc_point) < (player_circle.r))
+		{
+			std::cout << "Circle/Point Collision" << std::endl;
+			player_circle.print();
+			npc_point.print();
+			std::cin.get();
+		}
+		else
+		{
+			std::cout << "No Collision" << std::endl;
+			
+		}
+
+		player_circle.p.x = rand() % 10 + 1;
+		player_circle.p.y = rand() % 10 + 1;
+
+
+		if (npc_box.p.x >= player_box.p.x && npc_box.p.x <= (player_box.p.x + player_box.w))
+		{
+			if(npc_box.p.y >= (player_box.p.y - npc_box.h) || npc_box.p.y <= (player_box.p.y + player_box.h))
+			{
+				std::cout << "Box Collision" << std::endl;
+				player_box.print();
+				npc_box.print();
+				std::cin.get();
+			}
+		}
+		else if (npc_box.p.x <= player_box.p.x && npc_box.p.x >= (player_box.p.x - npc_box.w))
+		{
+			if(npc_box.p.y >= (player_box.p.y - npc_box.h) || npc_box.p.y <= (player_box.p.y + player_box.h))
+			{
+				std::cout << "Box Collision" << std::endl;
+				player_box.print();
+				npc_box.print();
+				std::cin.get();
+			}
+		}
+		else
+		{
+			std::cout << "No Collision" << std::endl;
+		}
+
+		player_box.p.x = rand() % 10 + 1;
+		player_box.p.y = rand() % 10 + 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	}
 
