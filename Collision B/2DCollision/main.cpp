@@ -33,6 +33,12 @@ int main()
 	//Shape for bounding box
 	sf::RectangleShape bBox;
 
+	c2Capsule capOne;
+	capOne.a = c2v{100.0f,100.0f};
+	capOne.b = c2v{ 200.0f, 200.0f };
+	capOne.r = 50;
+
+		
 	// Setup NPC's Default Animated Sprite
 	AnimatedSprite npc_animated_sprite(npc_texture);
 	npc_animated_sprite.addFrame(sf::IntRect(3, 3, 84, 84));
@@ -77,6 +83,8 @@ int main()
 	aabb_player.max = c2V(player.getAnimatedSprite().getPosition().x + player.getAnimatedSprite().getGlobalBounds().width / 6, player.getAnimatedSprite().getPosition().y + player.getAnimatedSprite().getGlobalBounds().width / 6);
 
 
+
+
 	// Initialize Input
 	Input input;
 
@@ -116,29 +124,33 @@ int main()
 		npc.getAnimatedSprite().setPosition(move_to);
 
 		// Update NPC AABB set x and y
-		aabb_npc.min = c2V(
-			npc.getAnimatedSprite().getPosition().x, 
-			npc.getAnimatedSprite().getPosition().y
-		);
+		aabb_npc.min = c2V
+							(
+								npc.getAnimatedSprite().getPosition().x, 
+								npc.getAnimatedSprite().getPosition().y
+							);
 
-		aabb_npc.max = c2V(
-			npc.getAnimatedSprite().getPosition().x +
-			npc.getAnimatedSprite().getGlobalBounds().width,
-			npc.getAnimatedSprite().getPosition().y +
-			npc.getAnimatedSprite().getGlobalBounds().height
-		);
+		aabb_npc.max = c2V
+							(
+								npc.getAnimatedSprite().getPosition().x +
+								npc.getAnimatedSprite().getGlobalBounds().width,
+								npc.getAnimatedSprite().getPosition().y +
+								npc.getAnimatedSprite().getGlobalBounds().height
+							);
 
 		// Update Player AABB
-		aabb_player.min = c2V(
-			player.getAnimatedSprite().getPosition().x, 
-			player.getAnimatedSprite().getPosition().y
-		);
-		aabb_player.max = c2V(
-			player.getAnimatedSprite().getPosition().x +
-			player.getAnimatedSprite().getGlobalBounds().width, 
-			player.getAnimatedSprite().getPosition().y + 
-			player.getAnimatedSprite().getGlobalBounds().height
-		);
+		aabb_player.min = c2V
+							(
+								player.getAnimatedSprite().getPosition().x, 
+								player.getAnimatedSprite().getPosition().y
+							);
+		aabb_player.max = c2V
+							(
+								player.getAnimatedSprite().getPosition().x +
+								player.getAnimatedSprite().getGlobalBounds().width, 
+								player.getAnimatedSprite().getPosition().y + 
+								player.getAnimatedSprite().getGlobalBounds().height
+							);
 
 		// Process events
 		sf::Event event;
@@ -203,7 +215,7 @@ int main()
 		// Draw the NPC's Current Animated Sprite
 		window.draw(npc.getAnimatedSprite());
 
-		
+		//window.draw();
 
 		// Update the window
 		window.display();
